@@ -8,6 +8,8 @@ lib.nixosSystem (args // {
       modpath = "nixos/modules";
       cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
 
+      hostConfig = (lib.nixosSystem args).config;
+
       isoConfig = (lib.nixosSystem
         (args // {
           modules = moduleList ++ [
@@ -21,6 +23,8 @@ lib.nixosSystem (args // {
               nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
               isoImage.storeContents = [
                 self.devShell.${config.nixpkgs.system}
+                hostConfig.system.build.toplevel
+                hostConfig.system.build.toplevel.drvPath
               ];
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
