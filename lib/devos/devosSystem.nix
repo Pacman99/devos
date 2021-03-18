@@ -14,6 +14,10 @@ lib.nixosSystem (args // {
         (args // {
           modules = [
             "${nixos}/${modpath}/${cd}"
+            modules.core
+            modules.modOverrides
+            modules.flakeModules
+            modules.global
             hostConfig.lib.specialArgs.suites.allUsers.root
             ({ config, ... }: {
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
