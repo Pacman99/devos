@@ -26,6 +26,7 @@ lib.nixosSystem (args // {
                 hostConfig.system.build.toplevel
                 hostConfig.system.build.toplevel.drvPath
               ];
+              environment.systemPackages = hostConfig.environment.systemPackages;
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
               networking.networkmanager.enable = lib.mkForce false;
