@@ -8,17 +8,16 @@ lib.nixosSystem (args // {
       modpath = "nixos/modules";
       cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
 
-      hostConfig = (lib.nixosSystem args).config;
+      hostConfig = (lib.nixosSystem (args // { modules = moduleList; })).config;
 
       isoConfig = (lib.nixosSystem
         (args // {
-          modules = [
+          modules = hostConfig.lib.specialArgs.suites.base ++ [
             "${nixos}/${modpath}/${cd}"
             modules.core
             modules.modOverrides
             modules.flakeModules
             modules.global
-            hostConfig.lib.specialArgs.suites.allUsers.root
             ({ config, ... }: {
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
